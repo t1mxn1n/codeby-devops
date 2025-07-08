@@ -1,0 +1,25 @@
+Script started on 2025-07-08 20:53:17+07:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="120" LINES="30"]
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ echo $PATH | tr ':' '\n' | grep jdk[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[16Psudo nano ~/.bashrcls -l $(which java)[5Pjava -version 
+[?2004ljava version "24.0.1" 2025-04-15
+Java(TM) SE Runtime Environment (build 24.0.1+9-30)
+Java HotSpot(TM) 64-Bit Server VM (build 24.0.1+9-30, mixed mode, sharing)
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ java -version echo $PATH | tr ':' '\n' | grep jdk[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[16Psudo nano ~/.bashrcls -l $(which java)[5Pjava -version ls -l $(which java)sudo nano ~/.bashrcecho $PATH | tr ':' '\n' | grep jdk[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[21Pjava -version [K[7msudo update-alternatives --config java[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Csudo update-alternatives --config java
+[?2004l[sudo] password for nikita: 
+There are 2 choices for the alternative java (providing /usr/bin/java).
+
+  Selection    Path                                         Priority   Status
+------------------------------------------------------------
+  0            /usr/lib/jvm/java-21-openjdk-amd64/bin/java   100       auto mode
+* 1            /opt/jdk-24/bin/java                          50        manual mode
+  2            /usr/lib/jvm/java-21-openjdk-amd64/bin/java   100       manual mode
+
+Press <enter> to keep the current choice[*], or type selection number: 0
+update-alternatives: using /usr/lib/jvm/java-21-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ sudo update-alternatives --config java[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[24Pjava -version echo $PATH | tr ':' '\n' | grep jdk[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[21Pjava -version 
+[?2004lopenjdk version "21.0.7" 2025-04-15
+OpenJDK Runtime Environment (build 21.0.7+6-Ubuntu-0ubuntu124.04)
+OpenJDK 64-Bit Server VM (build 21.0.7+6-Ubuntu-0ubuntu124.04, mixed mode, sharing)
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ exit
+[?2004lexit
+
+Script done on 2025-07-08 20:54:11+07:00 [COMMAND_EXIT_CODE="0"]
