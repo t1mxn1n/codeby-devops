@@ -1,0 +1,52 @@
+Script started on 2025-07-07 21:58:16+07:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="120" LINES="46"]
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ ps aux
+[?2004lUSER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.1  21644 12252 ?        Ss   21:42   0:00 /sbin/init
+root           2  0.0  0.0   3060  1792 ?        Sl   21:42   0:00 /init
+root           7  0.0  0.0   3104  1804 ?        Sl   21:42   0:00 plan9 --control-socket 7 --log-level 4 --server-fd 8 
+root          54  0.0  0.2  66816 19116 ?        S<s  21:42   0:00 /usr/lib/systemd/systemd-journald
+root         100  0.0  0.0  24872  6144 ?        Ss   21:42   0:00 /usr/lib/systemd/systemd-udevd
+systemd+     154  0.0  0.1  21452 12544 ?        Ss   21:42   0:00 /usr/lib/systemd/systemd-resolved
+systemd+     158  0.0  0.0  91020  7680 ?        Ssl  21:42   0:00 /usr/lib/systemd/systemd-timesyncd
+root         165  0.0  0.0   4236  2560 ?        Ss   21:42   0:00 /usr/sbin/cron -f -P
+message+     166  0.0  0.0   9628  4608 ?        Ss   21:42   0:00 @dbus-daemon --system --address=systemd: --nofork --n
+root         173  0.0  0.1  18148  8704 ?        Ss   21:42   0:00 /usr/lib/systemd/systemd-logind
+root         175  0.0  0.1 1755840 12800 ?       Ssl  21:42   0:00 /usr/libexec/wsl-pro-service -vv
+root         177  0.0  0.0   3160  1792 hvc0     Ss+  21:42   0:00 /sbin/agetty -o -p -- \u --noclear --keep-baud - 1152
+root         180  0.0  0.0   3116  1920 tty1     Ss+  21:42   0:00 /sbin/agetty -o -p -- \u --noclear - linux
+syslog       181  0.0  0.0 222508  5248 ?        Ssl  21:42   0:00 /usr/sbin/rsyslogd -n -iNONE
+root         187  0.0  0.2 107012 22144 ?        Ssl  21:42   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unatt
+root         287  0.0  0.0   3076   896 ?        Ss   21:42   0:00 /init
+root         288  0.0  0.0   3076   896 ?        S    21:42   0:00 /init
+nikita       289  0.0  0.0   6204  5248 pts/0    Ss+  21:42   0:00 -bash
+root         290  0.0  0.0   6824  4480 pts/1    Ss   21:42   0:00 /bin/login -f
+nikita       342  0.0  0.1  20292 11264 ?        Ss   21:42   0:00 /usr/lib/systemd/systemd --user
+nikita       343  0.0  0.0  21144  3516 ?        S    21:42   0:00 (sd-pam)
+nikita       354  0.0  0.0   6072  5248 pts/1    S+   21:42   0:00 -bash
+root         376  0.0  0.0  12020  8064 ?        Ss   21:42   0:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startu
+root         377  0.0  0.1  14740 10368 ?        Ss   21:42   0:00 sshd: nikita [priv]
+nikita       407  0.0  0.0  14996  7084 ?        S    21:42   0:00 sshd: nikita@pts/2
+nikita       408  0.0  0.0   6720  5888 pts/2    Ss   21:42   0:00 -bash
+nikita       489  0.0  0.0   3144  2048 pts/2    S+   21:58   0:00 script ps-log.txt
+nikita       490  0.0  0.0   6072  5120 pts/3    Ss   21:58   0:00 bash -i
+nikita       496  0.0  0.0   8280  4224 pts/3    R+   21:58   0:00 ps aux
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ ps -u nikita
+[?2004l    PID TTY          TIME CMD
+    289 pts/0    00:00:00 bash
+    342 ?        00:00:00 systemd
+    343 ?        00:00:00 (sd-pam)
+    354 pts/1    00:00:00 bash
+    407 ?        00:00:00 sshd
+    408 pts/2    00:00:00 bash
+    489 pts/2    00:00:00 script
+    490 pts/3    00:00:00 bash
+    497 pts/3    00:00:00 ps
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ top &
+[?2004l[1] 498
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ [?1l>kill -9 498
+[?2004l
+[1]+  Stopped                 top
+[?2004h]0;nikita@DESKTOP-UBNGLAC: ~[01;32mnikita@DESKTOP-UBNGLAC[00m:[01;34m~[00m$ exit
+[?2004lexit
+
+Script done on 2025-07-07 21:58:55+07:00 [COMMAND_EXIT_CODE="0"]
