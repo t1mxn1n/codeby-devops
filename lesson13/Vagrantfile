@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+    config.vm.define "wordpress" do |node|
+        node.vm.box = "ubuntu/jammy64"
+        node.vm.hostname = "wordpress.local"
+        node.vm.network "private_network", ip: "192.168.56.10"
+
+        node.vm.provision "ansible" do |ansible|
+            ansible.playbook = "wordpress.yml"
+            ansible.inventory_path = "inventory.ini"
+        end
+    end
+end
