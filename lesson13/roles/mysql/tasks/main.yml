@@ -1,0 +1,76 @@
+- name: Update apt cache (Debian/Ubuntu)
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Install MySQL/MariaDB and PyMySQL
+  ansible.builtin.package:
+    name:
+      - "{{ 'mariadb-server' if ansible_os_family == 'RedHat' else 'mysql-server' }}"
+      - python3-pymysql
+    state: present
+  become: true
+
+- name: Ensure MySQL service started
+  ansible.builtin.service:
+    name: "{{ 'mariadb' if ansible_os_family == 'RedHat' else 'mysql' }}"
+    state: started
+    enabled: true
+  become: true
+
+- name: Set MySQL socket path fact
+  ansible.builtin.set_fact:
+    mysql_socket: "{{ '/var/lib/mysql/mysql.sock' if ansible_os_family == 'RedHat' else '/var/run/mysqld/mysqld.sock' }}"
+
+- name: Read root auth plugin
+  ansible.builtin.command: >
+    mysql -NBe "SELECT plugin FROM mysql.user
+                WHERE user='root' AND host='localhost';"
+  register: mysql_root_plugin
+  changed_when: false
+  failed_when: false
+  become: true
+
+- name: Set root password via unix socket when socket auth is used
+  community.mysql.mysql_user:
+    name: root
+    host: localhost
+    password: "{{ mysql_root_password }}"
+    plugin: mysql_native_password
+    login_unix_socket: "{{ mysql_socket }}"
+    state: present
+  when: mysql_root_plugin.stdout is defined and
+        (mysql_root_plugin.stdout | trim) in ['auth_socket', 'unix_socket', '']
+  become: true
+
+- name: Ensure root password present (password login)
+  community.mysql.mysql_user:
+    name: root
+    host_all: true
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    state: present
+  become: true
+
+- name: Create database
+  community.mysql.mysql_db:
+    name: "{{ mysql_db }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  become: true
+
+- name: Create app user and grant privileges
+  community.mysql.mysql_user:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: "localhost"
+    priv: "{{ mysql_db }}.*:ALL"
+    plugin: mysql_native_password
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  become: true
