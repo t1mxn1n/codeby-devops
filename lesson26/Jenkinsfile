@@ -6,13 +6,14 @@ pipeline {
         stage('Detect Changes') {
             steps {
                 script {
-                    // получаем список изменённых файлов
+
+                    sh 'git fetch origin main'
+
                     changedFiles = sh(
-                        script: "git diff --name-only origin/${env.CHANGE_TARGET ?: 'main'}...HEAD",
+                        script: "git diff --name-only origin/main...HEAD",
                         returnStdout: true
                     ).trim().split("\n")
 
-                    // определяем изменённые приложения
                     changedApps = []
                     ['simple-java-maven-app-v1-world', 'simple-java-maven-app-v2-jenkins', 'simple-java-maven-app-v3-devops'].each { app ->
                         if (changedFiles.any { it.startsWith("${app}/") }) {
@@ -24,6 +25,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Parallel Pipeline') {
             parallel {
