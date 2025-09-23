@@ -9,6 +9,8 @@ pipeline {
 
                     sh 'git fetch origin main'
 
+                    sh 'git diff --name-only FETCH_HEAD...HEAD || true'
+
                     changedFiles = sh(
                         script: "git diff --name-only FETCH_HEAD...HEAD",
                         returnStdout: true
