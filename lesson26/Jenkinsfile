@@ -44,6 +44,7 @@ pipeline {
                         stage('Build') {
                             steps {
                                 dir('simple-java-maven-app-v1-world') {
+                                    sh 'ls -la'
                                     sh 'mvn -B -DskipTests clean package'
                                 }
                             }
