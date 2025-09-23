@@ -1,0 +1,146 @@
+pipeline {
+    agent any
+
+    options {
+        skipDefaultCheckout true
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Detect Changes') {
+            steps {
+                script {
+                    // получаем список изменённых файлов
+                    changedFiles = sh(
+                        script: "git diff --name-only origin/${env.CHANGE_TARGET ?: 'main'}...HEAD",
+                        returnStdout: true
+                    ).trim().split("\n")
+
+                    // определяем изменённые приложения
+                    changedApps = []
+                    ['simple-java-maven-app-v1-world', 'simple-java-maven-app-v2-jenkins', 'simple-java-maven-app-v3-devops'].each { app ->
+                        if (changedFiles.any { it.startsWith("${app}/") }) {
+                            changedApps << app
+                        }
+                    }
+
+                    echo "Изменились приложения: ${changedApps}"
+                }
+            }
+        }
+
+        stage('Parallel Pipeline') {
+
+            parallel {
+
+                stage('v1 pipeline (hello)') {
+
+                    when {
+                        expression { return changedApps.contains('simple-java-maven-app-v1-world') }
+                    }
+                    stages {
+
+                        stage('Build') {
+                            dir('simple-java-maven-app-v1-world') {
+                                sh 'mvn -B -DskipTests clean package'
+                            }
+                        }
+                        stage('Test') {
+                            steps {
+                                dir('simple-java-maven-app-v1-world') {
+                                    sh 'mvn test'
+                                }
+                                
+                            }
+                            post {
+                                always {
+                                    junit 'simple-java-maven-app-v1-world/target/surefire-reports/*.xml'
+                                }
+                            }
+                        }
+
+                        stage('Deliver') { 
+                            steps {
+                                sh './simple-java-maven-app-v1-world/jenkins/scripts/deliver.sh' 
+                            }
+                        }
+
+                    }
+
+                }
+
+                stage('v2 pipeline (jenkins)') {
+                    when {
+                        expression { return changedApps.contains('simple-java-maven-app-v2-jenkins') }
+                    }
+                    stages {
+
+                        stage('Build') {
+                            dir('simple-java-maven-app-v2-jenkins') {
+                                sh 'mvn -B -DskipTests clean package'
+                            }
+                        }
+                        stage('Test') {
+                            steps {
+                                dir('simple-java-maven-app-v2-jenkins') {
+                                    sh 'mvn test'
+                                }
+                                
+                            }
+                            post {
+                                always {
+                                    junit 'simple-java-maven-app-v2-jenkins/target/surefire-reports/*.xml'
+                                }
+                            }
+                        }
+
+                        stage('Deliver') { 
+                            steps {
+                                sh './simple-java-maven-app-v2-jenkins/jenkins/scripts/deliver.sh' 
+                            }
+                        }
+
+                    }
+                }
+                stage('v3 pipeline (devops)') {
+                    when {
+                        expression { return changedApps.contains('simple-java-maven-app-v3-devops') }
+                    }
+                    stages {
+
+                        stage('Build') {
+                            dir('simple-java-maven-app-v3-devops') {
+                                sh 'mvn -B -DskipTests clean package'
+                            }
+                        }
+                        stage('Test') {
+                            steps {
+                                dir('simple-java-maven-app-v3-devops') {
+                                    sh 'mvn test'
+                                }
+                                
+                            }
+                            post {
+                                always {
+                                    junit 'simple-java-maven-app-v3-devops/target/surefire-reports/*.xml'
+                                }
+                            }
+                        }
+
+                        stage('Deliver') { 
+                            steps {
+                                sh './simple-java-maven-app-v3-devops/jenkins/scripts/deliver.sh' 
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
