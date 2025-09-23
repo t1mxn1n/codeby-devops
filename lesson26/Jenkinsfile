@@ -15,6 +15,10 @@ pipeline {
                         script: "git diff --name-only FETCH_HEAD...HEAD",
                         returnStdout: true
                     ).trim().split("\n")
+                    
+                    echo "damn1... ${changedFiles}"
+                    echo "damn2... ${app}"
+                    
 
                     changedApps = []
                     ['simple-java-maven-app-v1-world', 'simple-java-maven-app-v2-jenkins', 'simple-java-maven-app-v3-devops'].each { app ->
