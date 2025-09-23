@@ -26,19 +26,18 @@ pipeline {
         }
 
         stage('Parallel Pipeline') {
-
             parallel {
 
                 stage('v1 pipeline (hello)') {
-
                     when {
                         expression { return changedApps.contains('simple-java-maven-app-v1-world') }
                     }
                     stages {
-
                         stage('Build') {
-                            dir('simple-java-maven-app-v1-world') {
-                                sh 'mvn -B -DskipTests clean package'
+                            steps {
+                                dir('simple-java-maven-app-v1-world') {
+                                    sh 'mvn -B -DskipTests clean package'
+                                }
                             }
                         }
                         stage('Test') {
@@ -46,7 +45,6 @@ pipeline {
                                 dir('simple-java-maven-app-v1-world') {
                                     sh 'mvn test'
                                 }
-                                
                             }
                             post {
                                 always {
@@ -54,15 +52,12 @@ pipeline {
                                 }
                             }
                         }
-
-                        stage('Deliver') { 
+                        stage('Deliver') {
                             steps {
-                                sh './simple-java-maven-app-v1-world/jenkins/scripts/deliver.sh' 
+                                sh './simple-java-maven-app-v1-world/jenkins/scripts/deliver.sh'
                             }
                         }
-
                     }
-
                 }
 
                 stage('v2 pipeline (jenkins)') {
@@ -70,10 +65,11 @@ pipeline {
                         expression { return changedApps.contains('simple-java-maven-app-v2-jenkins') }
                     }
                     stages {
-
                         stage('Build') {
-                            dir('simple-java-maven-app-v2-jenkins') {
-                                sh 'mvn -B -DskipTests clean package'
+                            steps {
+                                dir('simple-java-maven-app-v2-jenkins') {
+                                    sh 'mvn -B -DskipTests clean package'
+                                }
                             }
                         }
                         stage('Test') {
@@ -81,7 +77,6 @@ pipeline {
                                 dir('simple-java-maven-app-v2-jenkins') {
                                     sh 'mvn test'
                                 }
-                                
                             }
                             post {
                                 always {
@@ -89,24 +84,24 @@ pipeline {
                                 }
                             }
                         }
-
-                        stage('Deliver') { 
+                        stage('Deliver') {
                             steps {
-                                sh './simple-java-maven-app-v2-jenkins/jenkins/scripts/deliver.sh' 
+                                sh './simple-java-maven-app-v2-jenkins/jenkins/scripts/deliver.sh'
                             }
                         }
-
                     }
                 }
+
                 stage('v3 pipeline (devops)') {
                     when {
                         expression { return changedApps.contains('simple-java-maven-app-v3-devops') }
                     }
                     stages {
-
                         stage('Build') {
-                            dir('simple-java-maven-app-v3-devops') {
-                                sh 'mvn -B -DskipTests clean package'
+                            steps {
+                                dir('simple-java-maven-app-v3-devops') {
+                                    sh 'mvn -B -DskipTests clean package'
+                                }
                             }
                         }
                         stage('Test') {
@@ -114,7 +109,6 @@ pipeline {
                                 dir('simple-java-maven-app-v3-devops') {
                                     sh 'mvn test'
                                 }
-                                
                             }
                             post {
                                 always {
@@ -122,15 +116,14 @@ pipeline {
                                 }
                             }
                         }
-
-                        stage('Deliver') { 
+                        stage('Deliver') {
                             steps {
-                                sh './simple-java-maven-app-v3-devops/jenkins/scripts/deliver.sh' 
+                                sh './simple-java-maven-app-v3-devops/jenkins/scripts/deliver.sh'
                             }
                         }
-
                     }
                 }
+
             }
         }
     }
