@@ -66,6 +66,18 @@ pipeline {
                                 }
                             }
                         }
+
+                        stage('SonarQube Analysis') {
+                            steps {
+                                dir('lesson26/simple-java-maven-app-v1-world') {
+                                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar-lesson27') {
+                                        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=maven -Dsonar.projectName='lesson27'"
+                                    }
+                                }
+                            }
+                        }
+
+                        
                         stage('Deliver') {
                             steps {
                                 sh './lesson26/simple-java-maven-app-v1-world/jenkins/scripts/deliver.sh'
