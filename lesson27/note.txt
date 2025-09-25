@@ -1,0 +1,1 @@
+изменения Jenkinsfile в папке lesson26
