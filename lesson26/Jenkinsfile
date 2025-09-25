@@ -77,6 +77,12 @@ pipeline {
                             }
                         }
 
+                        stage('Quality Gate') {
+                            steps {
+                                sleep 60
+                                waitForQualityGate abortPipeline: true
+                            }
+                        }
                         
                         stage('Deliver') {
                             steps {
@@ -110,6 +116,22 @@ pipeline {
                                 }
                             }
                         }
+                        stage('SonarQube Analysis') {
+                            steps {
+                                dir('lesson26/simple-java-maven-app--v2-jenkins') {
+                                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar-lesson27') {
+                                        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=maven -Dsonar.projectName='lesson27'"
+                                    }
+                                }
+                            }
+                        }
+
+                        stage('Quality Gate') {
+                            steps {
+                                sleep 60
+                                waitForQualityGate abortPipeline: true
+                            }
+                        }
                         stage('Deliver') {
                             steps {
                                 sh './lesson26/simple-java-maven-app-v2-jenkins/jenkins/scripts/deliver.sh'
@@ -140,6 +162,22 @@ pipeline {
                                 always {
                                     junit 'lesson26/simple-java-maven-app-v3-devops/target/surefire-reports/*.xml'
                                 }
+                            }
+                        }
+                        stage('SonarQube Analysis') {
+                            steps {
+                                dir('lesson26/simple-java-maven-app-v3-devops') {
+                                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar-lesson27') {
+                                        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=maven -Dsonar.projectName='lesson27'"
+                                    }
+                                }
+                            }
+                        }
+
+                        stage('Quality Gate') {
+                            steps {
+                                sleep 60
+                                waitForQualityGate abortPipeline: true
                             }
                         }
                         stage('Deliver') {
