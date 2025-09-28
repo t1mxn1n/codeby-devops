@@ -1,0 +1,76 @@
+networks:
+  monitoring:
+    driver: bridge
+
+services:
+  prometheus:
+    image: bitnami/prometheus:latest
+    container_name: prometheus
+    ports:
+    - '9090:9090'
+    volumes:
+    - prometheus_data:/opt/bitnami/prometheus/data
+    - './configs/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml'
+    networks:
+      - monitoring
+
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    volumes:
+      - ./configs/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    command:
+      - '--config.file=/etc/blackbox_exporter/config.yml'
+    ports:
+      - "9115:9115"
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - '8080:8080'
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./configs/grafana/provisioning/dashboards:/var/lib/grafana/dashboards:ro
+      - ./configs/grafana/provisioning/dashboards/reddit_dashboard.json:/var/lib/grafana/dashboards/reddit_dashboard.json:ro
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    networks:
+      - monitoring
+  
+  alertmanager:
+    image: bitnami/alertmanager:latest
+    volumes:
+      - ./configs/alertmanager.yml:/opt/bitnami/alertmanager/conf/config.yml
+    ports:
+    - 9093:9093
+    networks:
+      - monitoring
+
+volumes:
+  prometheus_data:
+  grafana_data:

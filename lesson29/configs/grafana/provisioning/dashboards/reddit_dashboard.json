@@ -1,0 +1,85 @@
+{
+    "annotations": { "list": [] },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "panels": [
+      {
+        "type": "timeseries",
+        "title": "Total probes to UI: / and /new (1h window)",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+        "targets": [
+          {
+            "expr": "increase(probe_success{instance=~\"http://ui:9292/?$|http://ui:9292/new$\"}[1h])",
+            "legendFormat": "{{instance}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": { "defaults": {}, "overrides": [] }
+      },
+      {
+        "type": "timeseries",
+        "title": "Rate (requests/sec) to UI (per path) — instant rate",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 },
+        "targets": [
+          {
+            "expr": "rate(probe_success{instance=~\"http://ui:9292/?$|http://ui:9292/new$\"}[5m])",
+            "legendFormat": "{{instance}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": { "defaults": {}, "overrides": [] }
+      },
+      {
+        "type": "timeseries",
+        "title": "90th percentile of probe duration (ui paths) over 5m",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+        "targets": [
+          {
+            "expr": "quantile_over_time(0.90, probe_duration_seconds{instance=~\"http://ui:9292/?$|http://ui:9292/new$\"}[5m])",
+            "legendFormat": "{{instance}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] }
+      },
+      {
+        "type": "stat",
+        "title": "Last probe success (ui /)",
+        "gridPos": { "h": 4, "w": 12, "x": 0, "y": 24 },
+        "targets": [
+          {
+            "expr": "probe_success{instance=\"http://ui:9292/\"}",
+            "legendFormat": "ui /",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": { "defaults": {}, "overrides": [] }
+      },
+      {
+        "type": "stat",
+        "title": "Last probe success (ui /new)",
+        "gridPos": { "h": 4, "w": 12, "x": 12, "y": 24 },
+        "targets": [
+          {
+            "expr": "probe_success{instance=\"http://ui:9292/new\"}",
+            "legendFormat": "ui /new",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": { "defaults": {}, "overrides": [] }
+      }
+    ],
+    "schemaVersion": 36,
+    "style": "dark",
+    "tags": ["reddit", "blackbox"],
+    "templating": { "list": [] },
+    "time": { "from": "now-1h", "to": "now" },
+    "timepicker": {},
+    "title": "Reddit App (Blackbox) dashboard",
+    "uid": "reddit-blackbox-dashboard",
+    "version": 1
+  }
+  
