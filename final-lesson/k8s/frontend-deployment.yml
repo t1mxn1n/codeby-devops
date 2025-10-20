@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          # image: demo-frontend:latest
+          # imagePullPolicy: Never
+          image: ghcr.io/t1mxn1n/demo-frontend:latest
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+          - name: ghcr-creds

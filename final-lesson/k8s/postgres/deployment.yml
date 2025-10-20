@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+          - name: POSTGRES_DB
+            value: demo
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - name: pgdata
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+
+      initContainers:
+      - name: init-db
+        image: postgres:15
+        command:
+          - sh
+          - -c
+          - |
+            echo "⏳ Waiting for PostgreSQL to be ready...";
+            until pg_isready -h postgres.demo.svc.cluster.local -U postgres; do sleep 2; done;
+            echo "initializing schema...";
+            psql -v ON_ERROR_STOP=1 -h postgres.demo.svc.cluster.local -U postgres -d demo <<-EOSQL
+              CREATE TABLE IF NOT EXISTS items (
+                id SERIAL PRIMARY KEY,
+                name TEXT NOT NULL
+              );
+            EOSQL
+        env:
+          - name: PGPASSWORD
+            value: postgres
+        volumeMounts:
+          - name: pgdata
+            mountPath: /var/lib/postgresql/data
