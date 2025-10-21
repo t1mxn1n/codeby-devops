@@ -4,6 +4,7 @@ metadata:
   name: backend
   namespace: demo
 spec:
+  type: LoadBalancer
   selector:
     app: backend
   ports:

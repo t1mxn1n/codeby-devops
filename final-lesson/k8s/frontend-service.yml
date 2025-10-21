@@ -4,9 +4,9 @@ metadata:
   name: frontend
   namespace: demo
 spec:
+  type: LoadBalancer
   selector:
     app: frontend
   ports:
     - port: 80
       targetPort: 80
-  type: NodePort

@@ -4,6 +4,7 @@ metadata:
   name: grafana
   namespace: demo
 spec:
+  type: LoadBalancer
   selector:
     app: grafana
   ports:

@@ -8,7 +8,6 @@
 # env:
 #   REGISTRY: ghcr.io
 #   IMAGE_BACKEND: ghcr.io/${{ github.repository_owner }}/demo-backend
-#   IMAGE_FRONTEND: ghcr.io/${{ github.repository_owner }}/demo-frontend
 #   TAG: latest
 
 # jobs:
@@ -25,11 +24,6 @@
 #         run: |
 #           docker build -t $IMAGE_BACKEND:$TAG ./backend
 #           docker push $IMAGE_BACKEND:$TAG
-
-#       - name: Build & push frontend
-#         run: |
-#           docker build -t $IMAGE_FRONTEND:$TAG ./frontend
-#           docker push $IMAGE_FRONTEND:$TAG
 
 #   deploy:
 #     runs-on: ubuntu-latest
@@ -60,10 +54,8 @@
 #       - name: Deploy manifests
 #         run: |
 #           kubectl apply -f k8s/namespace.yml
-#           kubectl apply -f k8s/backend-deployment.yml
-#           kubectl apply -f k8s/backend-service.yml
-#           kubectl apply -f k8s/frontend-deployment.yml
-#           kubectl apply -f k8s/frontend-service.yml
-#           kubectl apply -k k8s/monitoring
 #           kubectl apply -k k8s/postgres
+#           kubectl apply -k k8s/api
+#           kubectl apply -k k8s/monitoring --server-side=true
+
 

@@ -17,3 +17,8 @@ variable "yc_zone" {
   type        = string
   description = "Yandex Compute Zone"
 }
+
+variable "yc_network_id" {
+  type        = string
+  description = "Yandex Compute Network ID"
+}

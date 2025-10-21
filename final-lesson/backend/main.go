@@ -23,20 +23,6 @@ type Item struct {
 
 var db *sql.DB
 
-func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8081")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		
-		if r.Method == "OPTIONS" {
-			return
-		}
-		
-		next(w, r)
-	}
-}
-
 func main() {
 	connStr := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s sslmode=disable",
@@ -54,10 +40,10 @@ func main() {
 		log.Fatal("DB ping error:", err)
 	}
 
-	http.HandleFunc("/api/add", corsMiddleware(addItem))
-	http.HandleFunc("/api/delete", corsMiddleware(deleteItem))
-	http.HandleFunc("/api/list", corsMiddleware(listItems))
-	http.HandleFunc("/api/load", corsMiddleware(simulateLoad))
+	http.HandleFunc("/api/add", addItem)
+	http.HandleFunc("/api/delete", deleteItem)
+	http.HandleFunc("/api/list", listItems)
+	http.HandleFunc("/api/load", simulateLoad)
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, "ok")
