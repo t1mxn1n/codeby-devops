@@ -8,7 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_BACKEND: ghcr.io/${{ github.repository_owner }}/demo-backend
-  TAG: latest
+  TAG: ${{ github.sha }}
 
 jobs:
   build:
@@ -59,6 +59,10 @@ jobs:
             --docker-username=${{ secrets.GHCR_USERNAME }} \
             --docker-password=${{ secrets.GHCR_TOKEN }} \
             --namespace=demo
+
+      - name: Patch backend deployment
+        run: |
+          kubectl set image deployment/backend backend=$IMAGE_BACKEND:$TAG -n demo
 
       - name: Deploy all manifests
         run: |
