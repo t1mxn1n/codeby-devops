@@ -46,7 +46,7 @@ func main() {
 	http.HandleFunc("/api/load", simulateLoad)
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintln(w, "ok")
+		fmt.Fprintln(w, "ok [bug]")
 	})
 
 	port := getEnv("PORT", "8080")
