@@ -155,7 +155,7 @@ func simulateLoad(w http.ResponseWriter, _ *http.Request) {
 	
 	wg.Wait()
 	duration := time.Since(start)
-	fmt.Fprintf(w, "[test changes] Parallel CPU load (%d workers) completed in %v\n", numWorkers, duration)
+	fmt.Fprintf(w, "Parallel CPU load (%d workers) completed in %v\n", numWorkers, duration)
 }
 
 func getEnv(k, def string) string {
