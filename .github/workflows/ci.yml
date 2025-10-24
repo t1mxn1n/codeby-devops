@@ -22,7 +22,7 @@ jobs:
 
       - name: Build & push backend
         run: |
-          docker build -t $IMAGE_BACKEND:$TAG ./backend
+          docker build -t $IMAGE_BACKEND:$TAG ./final-lesson/backend
           docker push $IMAGE_BACKEND:$TAG
 
   deploy:
@@ -43,7 +43,7 @@ jobs:
         run: yc managed-kubernetes cluster get-credentials demo-cluster --external --force
 
       - name: Ensure namespace exists
-        run: kubectl apply -f k8s/namespace.yml
+        run: kubectl apply -f ./final-lesson/k8s/namespace.yml
 
       - name: Create GHCR secret in cluster
         run: |
@@ -56,6 +56,6 @@ jobs:
 
       - name: Deploy all manifests
         run: |
-          kubectl apply -k k8s/postgres
-          kubectl apply -k k8s/api
-          kubectl apply -k k8s/monitoring --server-side=true
+          kubectl apply -k ./final-lesson/k8s/postgres
+          kubectl apply -k ./final-lesson/k8s/api
+          kubectl apply -k ./final-lesson/k8s/monitoring --server-side=true
