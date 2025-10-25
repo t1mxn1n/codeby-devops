@@ -1,0 +1,10 @@
+resources:
+  - prometheus-config.yml
+  - prometheus-deployment.yml
+  - node-exporter-daemonset.yml
+  - node-exporter-service.yml
+  - grafana-service.yml
+  - grafana-deployment.yml
+  - grafana-datasource.yml
+  - grafana-dashboard-node-exporter.yml
+  - grafana-dashboard-provider.yml
